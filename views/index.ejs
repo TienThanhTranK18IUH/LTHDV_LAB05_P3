@@ -1,22 +1,3 @@
 
-
-<h1>Danh sách nhà cung cấp</h1>
-<ul>
-  <li><a href="/products">Tất cả</a></li>
-  <% suppliers.forEach(s => { %>
-    <li><a href="/products?supplierId=<%= s._id %>"><%= s.name %></a></li>
-  <% }) %>
-</ul>
-
-<h2>Sản phẩm nổi bật</h2>
-<div>
-  <% products.forEach(p => { %>
-    <div>
-      <h3><%= p.name %></h3>
-      <p>Giá: <%= p.price %> | Số lượng: <%= p.quantity %></p>
-      <p>Nhà cung cấp: <%= p.supplier ? p.supplier.name : '—' %></p>
-    </div>
-  <% }) %>
-</div>
-
-<%- include('partials/footer') %>
+<h2>Chào mừng đến hệ thống quản lý</h2>
+<p>Hãy đăng nhập để quản lý nhà cung cấp và sản phẩm.</p>

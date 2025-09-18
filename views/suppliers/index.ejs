@@ -1,12 +1,14 @@
+
 <h2>Danh sách nhà cung cấp</h2>
 <a href="/suppliers/new">+ Thêm mới</a>
-
 <ul>
-  <% if (suppliers.length === 0) { %>
-    <li>Chưa có nhà cung cấp nào.</li>
-  <% } else { %>
-    <% suppliers.forEach(supplier => { %>
-      <li><%= supplier.name %> - <%= supplier.address %> - <%= supplier.phone %></li>
-    <% }) %>
-  <% } %>
+  <% suppliers.forEach(s => { %>
+    <li>
+      <%= s.name %> - <%= s.phone %>
+      <a href="/suppliers/<%= s._id %>/edit">Sửa</a>
+      <form action="/suppliers/<%= s._id %>?_method=DELETE" method="POST" style="display:inline">
+        <button>Xóa</button>
+      </form>
+    </li>
+  <% }) %>
 </ul>

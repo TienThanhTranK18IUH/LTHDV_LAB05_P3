@@ -1,8 +1,8 @@
-<% layout('../layout') %>
-<h2><%= supplier._id ? 'Sửa' : 'Thêm' %> nhà cung cấp</h2>
-<form method="POST" action="<%= supplier._id ? '/suppliers/' + supplier._id + '?_method=PUT' : '/suppliers' %>">
-  <input type="text" name="name" value="<%= supplier.name || '' %>" placeholder="Tên" required>
-  <input type="text" name="phone" value="<%= supplier.phone || '' %>" placeholder="SĐT">
-  <input type="text" name="address" value="<%= supplier.address || '' %>" placeholder="Địa chỉ">
+
+<h2><%= supplier._id ? 'Sửa nhà cung cấp' : 'Thêm nhà cung cấp' %></h2>
+<form action="<%= supplier._id ? '/suppliers/' + supplier._id + '?_method=PUT' : '/suppliers' %>" method="POST">
+  <input type="text" name="name" placeholder="Tên" value="<%= supplier.name || '' %>" required>
+  <input type="text" name="address" placeholder="Địa chỉ" value="<%= supplier.address || '' %>">
+  <input type="text" name="phone" placeholder="Số điện thoại" value="<%= supplier.phone || '' %>">
   <button type="submit">Lưu</button>
 </form>

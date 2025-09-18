@@ -3,15 +3,22 @@ const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
-  passwordHash: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  phone: { type: String }
-}, { timestamps: true });
+  email:    { type: String, required: true, unique: true },
+  phone:    { type: String },
+  password: { type: String, required: true }
+});
 
-userSchema.methods.verifyPassword = function(password) {
-  return bcrypt.compare(password, this.passwordHash);
+// Hash password before save
+userSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
+});
+
+
+// Kiểm tra mật khẩu
+userSchema.methods.comparePassword = function(password) {
+  return bcrypt.compare(password, this.password);
 };
-
-userSchema.statics.hashPassword = (password) => bcrypt.hash(password, 10);
 
 module.exports = mongoose.model('User', userSchema);

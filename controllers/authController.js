@@ -1,55 +1,60 @@
 const User = require('../models/User');
 
-exports.showRegister = (req, res) => res.render('register');
-exports.showLogin = (req, res) => res.render('login');
+exports.getRegister = (req, res) => res.render('auth/register');
+exports.getLogin = (req, res) => res.render('auth/login');
 
-exports.register = async (req, res) => {
+exports.postRegister = async (req, res) => {
   try {
-    const { username, password, email, phone } = req.body;
-    const passwordHash = await User.hashPassword(password);
-    const user = new User({ username, passwordHash, email, phone });
+    const { username, email, phone, password } = req.body;
+    const user = new User({ username, email, phone, password });
     await user.save();
-    req.session.user = { id: user._id, username: user.username };
-    res.redirect('/');
+    req.flash('success', 'Đăng ký thành công! Đăng nhập ngay.');
+    res.redirect('/auth/login');
   } catch (err) {
-    console.error(err);
-    req.flash('error', 'Đăng ký thất bại: ' + (err.message || ''));
+    req.flash('error', 'Lỗi đăng ký: ' + err.message);
     res.redirect('/auth/register');
   }
 };
 
-exports.login = async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
-    if (!user) {
-      req.flash('error', 'Tài khoản không tồn tại');
-      return res.redirect('/auth/login');
-    }
-    const valid = await user.verifyPassword(password);
-    if (!valid) {
-      req.flash('error', 'Sai mật khẩu');
-      return res.redirect('/auth/login');
-    }
-    req.session.user = { id: user._id, username: user.username };
-    res.redirect('/');
-  } catch (err) {
-    console.error(err);
-    res.redirect('/auth/login');
-  }
-};
+exports.postLogin = async (req, res) => {
+  const { email, password } = req.body;
+  console.log("Form data:", email, password); // debug
 
-exports.logout = (req, res) => {
-  req.session.destroy(err => {
+  const user = await User.findOne({ email });
+  console.log("User found:", user);
+
+  if (!user) {
+    req.flash('error', 'Email không tồn tại');
+    return res.redirect('/auth/login');
+  }
+
+  // Nếu password hoặc user.password null → báo lỗi
+  if (!password || !user.password) {
+    req.flash('error', 'Thiếu mật khẩu');
+    return res.redirect('/auth/login');
+  }
+
+  const valid = await user.comparePassword(password);
+  if (!valid) {
+    req.flash('error', 'Sai mật khẩu');
+    return res.redirect('/auth/login');
+  }
+
+  req.session.user = { _id: user._id, username: user.username, email: user.email };
+  req.session.save(err => {
+    if (err) {
+      console.error(err);
+      req.flash('error', 'Có lỗi xảy ra, vui lòng thử lại');
+      return res.redirect('/auth/login');
+    }
+    req.flash('success', 'Đăng nhập thành công!');
     res.redirect('/');
   });
 };
 
-// Simple forgot password (demo) -> In production use email with token.
-// Here we just render a form and pretend.
-exports.showForgot = (req, res) => res.render('forgot');
-exports.forgot = (req, res) => {
-  // Implement: create token, send email via nodemailer, etc.
-  req.flash('info', 'Nếu email tồn tại, hướng dẫn đã được gửi (demo).');
-  res.redirect('/auth/login');
+
+
+exports.logout = (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
 };

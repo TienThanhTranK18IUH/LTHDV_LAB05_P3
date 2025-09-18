@@ -1,41 +1,14 @@
 
-<h1>Sản phẩm</h1>
-
-<form method="get" action="/products">
-  <select name="supplierId" onchange="this.form.submit()">
-    <option value="">--Tất cả nhà cung cấp--</option>
-    <% suppliers.forEach(s => { %>
-      <option value="<%= s._id %>" <%= selectedSupplier==s._id ? 'selected' : '' %>><%= s.name %></option>
-    <% }) %>
-  </select>
-  <input name="q" placeholder="Tìm theo tên..." value="<%= search %>">
-  <button>Tìm</button>
-</form>
-
-<% if (currentUser) { %>
-  <a href="/products/new">Tạo sản phẩm mới</a>
-<% } %>
-
-<table>
-  <thead><tr><th>Tên</th><th>Giá</th><th>Số lượng</th><th>Nhà cung cấp</th><th>Hành động</th></tr></thead>
-  <tbody>
-    <% products.forEach(p => { %>
-      <tr>
-        <td><%= p.name %></td>
-        <td><%= p.price %></td>
-        <td><%= p.quantity %></td>
-        <td><%= p.supplier ? p.supplier.name : '' %></td>
-        <td>
-          <% if (currentUser) { %>
-            <a href="/products/<%= p._id %>/edit">Sửa</a>
-            <form method="post" action="/products/<%= p._id %>?_method=DELETE" style="display:inline">
-              <button> Xóa</button>
-            </form>
-          <% } %>
-        </td>
-      </tr>
-    <% }) %>
-  </tbody>
-</table>
-
-<%- include('../partials/footer') %>
+<h2>Danh sách sản phẩm</h2>
+<a href="/products/new">+ Thêm mới</a>
+<ul>
+  <% products.forEach(p => { %>
+    <li>
+      <%= p.name %> - <%= p.price %> - <%= p.quantity %> (NCC: <%= p.supplier?.name %>)
+      <a href="/products/<%= p._id %>/edit">Sửa</a>
+      <form action="/products/<%= p._id %>?_method=DELETE" method="POST" style="display:inline">
+        <button>Xóa</button>
+      </form>
+    </li>
+  <% }) %>
+</ul>

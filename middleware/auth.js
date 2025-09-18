@@ -1,11 +1,7 @@
-module.exports = {
-  ensureAuthenticated: (req, res, next) => {
-    if (req.session.user) return next();
-    req.flash('error', 'Bạn cần đăng nhập để truy cập chức năng này.');
-    res.redirect('/auth/login');
-  },
-  ensureGuest: (req, res, next) => {
-    if (!req.session.user) return next();
-    res.redirect('/');
+module.exports.isLoggedIn = (req, res, next) => {
+  if (!req.session.user) {
+    req.flash('error', 'Bạn cần đăng nhập trước');
+    return res.redirect('/auth/login');
   }
+  next();
 };
