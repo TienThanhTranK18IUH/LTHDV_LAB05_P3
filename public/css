@@ -1,0 +1,16 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+nav a {
+  margin-right: 10px;
+}
+
+.alert {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.alert.error { background: #fdd; }
+.alert.info { background: #dfd; }

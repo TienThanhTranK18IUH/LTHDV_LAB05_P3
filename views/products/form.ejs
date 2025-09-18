@@ -1,0 +1,29 @@
+<%- include('../partials/header') %>
+
+<h1><%= product && product._id ? 'Sửa' : 'Tạo' %> sản phẩm</h1>
+
+<form method="post" action="<%= product && product._id ? '/products/' + product._id + '?_method=PUT' : '/products' %>">
+  <div>
+    <label>Tên</label>
+    <input name="name" value="<%= product.name || '' %>" required>
+  </div>
+  <div>
+    <label>Giá</label>
+    <input name="price" type="number" value="<%= product.price || 0 %>" required>
+  </div>
+  <div>
+    <label>Số lượng</label>
+    <input name="quantity" type="number" value="<%= product.quantity || 0 %>">
+  </div>
+  <div>
+    <label>Nhà cung cấp</label>
+    <select name="supplier" required>
+      <% suppliers.forEach(s => { %>
+        <option value="<%= s._id %>" <%= product.supplier==s._id ? 'selected' : '' %>><%= s.name %></option>
+      <% }) %>
+    </select>
+  </div>
+  <button> Lưu </button>
+</form>
+
+<%- include('../partials/footer') %>

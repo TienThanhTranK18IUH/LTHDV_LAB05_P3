@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title : 'My App' %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>My App</h1>
+    <nav>
+      <a href="/">Home</a> |
+      <a href="/suppliers">Suppliers</a> |
+      <a href="/products">Products</a>
+    </nav>
+    <hr>
+  </header>
+
+  <main>
+    <%- body %>  <!-- Nội dung từng view sẽ hiển thị ở đây -->
+  </main>
+
+  <footer>
+    <hr>
+    <p>&copy; 2025 My App</p>
+  </footer>
+</body>
+</html>

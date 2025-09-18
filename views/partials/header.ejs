@@ -1,0 +1,21 @@
+<nav>
+  <a href="/">Home</a>
+  <a href="/products">Sản phẩm</a>
+  <a href="/suppliers">Nhà cung cấp</a>
+
+  <form action="/products" method="get" style="display:inline">
+    <input name="q" placeholder="Tìm sản phẩm..." value="<%= (typeof search !== 'undefined') ? search : '' %>">
+    <button>Tìm</button>
+  </form>
+
+  <% if (!currentUser) { %>
+    <a href="/auth/login">Đăng nhập</a>
+    <a href="/auth/register">Đăng ký</a>
+  <% } else { %>
+    <span>Hi, <%= currentUser.username %></span>
+    <form action="/auth/logout" method="post" style="display:inline">
+      <button>Thoát</button>
+    </form>
+  <% } %>
+</nav>
+<hr/>
