@@ -1,0 +1,14 @@
+# bỏ file .env
+.env
+
+# thư mục node_modules
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# hệ điều hành
+.DS_Store
+Thumbs.db
